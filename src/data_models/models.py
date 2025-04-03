@@ -45,11 +45,19 @@ class SentimentScoresOutput(BaseModel):
 
     model_config = ConfigDict(extra='forbid')
 
+class TrendScoresOutput(BaseModel):
+    """Defines the structure for the detailed trend score output."""
+    recency_weighted: float = Field(..., description="Score based on recency-weighted evidence")
+    rate_of_change: float = Field(..., description="Score based on rate of change between time windows")
+    evidence_progression: float = Field(..., description="Score based on progression in evidence hierarchy")
+
+    model_config = ConfigDict(extra='forbid')
+
 class ScorerOutputData(BaseModel):
-    """ Pydantic model for validating the final output dictionary from get_all_scores. """
+    """Pydantic model for validating the final output dictionary from get_all_scores."""
     evidence_strength: float = Field(..., description="Calculated normalized, weighted evidence score")
     sentiment_scores: SentimentScoresOutput = Field(..., description="Detailed sentiment breakdown")
-    trend_score: float = Field(..., description="Calculated score reflecting dynamics")
+    trend_scores: TrendScoresOutput = Field(..., description="Detailed trend scores from different perspectives")
 
     model_config = ConfigDict(extra='forbid') 
 

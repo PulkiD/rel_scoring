@@ -117,8 +117,11 @@ def test_get_trend_score_runs(valid_input_data):
     """ Test that get_trend_score runs without critical errors. """
     scorer = RelationshipScorer(input_data=valid_input_data)
     try:
-        score = scorer.get_trend_score()
-        assert isinstance(score, float)
+        scores = scorer.get_trend_score()
+        assert isinstance(scores, dict)
+        assert "recency_weighted" in scores
+        assert "rate_of_change" in scores
+        assert "evidence_progression" in scores
         # Add assertions for expected value
     except CalculationError as e:
         pytest.fail(f"get_trend_score failed unexpectedly: {e}")
@@ -131,7 +134,7 @@ def test_get_all_scores_runs(valid_input_data):
         assert isinstance(all_scores, dict)
         assert "evidence_strength" in all_scores
         assert "sentiment_scores" in all_scores
-        assert "trend_score" in all_scores
+        assert "trend_scores" in all_scores
         assert isinstance(all_scores["sentiment_scores"], dict) # Check nested structure
         # Add more specific assertions
     except CalculationError as e:

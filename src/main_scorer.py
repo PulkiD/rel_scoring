@@ -1,9 +1,8 @@
-# src/main_scorer.py
 # Contains the main RelationshipScorer class for calculating ensemble scores.
 
 from pydantic import ValidationError
 
-# Import package components using relative imports
+
 from .utils.config_loader import load_config
 from .utils.logger import get_logger
 from .scoring import evidence, sentiment, trend
@@ -35,7 +34,7 @@ class RelationshipScorer:
     entity_a: EntityMetadata
     entity_b: EntityMetadata
     config: Dict[str, Any]
-    logger: Any # Type hint for logger if possible, depends on logger implementation details
+    logger: Any
 
     def __init__(self, input_data: Dict[str, Any]):
         """
@@ -49,7 +48,7 @@ class RelationshipScorer:
         Raises:
             ScoringInitializationError: If input data fails validation or config cannot be loaded.
         """
-        self.logger = get_logger() # Initialize logger first
+        self.logger = get_logger() 
         self.logger.info(f"Initializing RelationshipScorer for entity pair: {input_data.get('entity_a_metadata',{}).get('id','N/A')} - {input_data.get('entity_b_metadata',{}).get('id','N/A')}")
 
         # 1. Validate input using Pydantic
@@ -64,7 +63,7 @@ class RelationshipScorer:
             self.logger.error(f"Input data validation failed: {e}", exc_info=True)
             # Wrap Pydantic error in our custom exception for consistency
             raise InputValidationError(e)
-        except Exception as e: # Catch other potential errors during model instantiation
+        except Exception as e:
              self.logger.error(f"Unexpected error during input data processing: {e}", exc_info=True)
              raise ScoringInitializationError(f"Unexpected error processing input data: {e}")
 
@@ -73,7 +72,7 @@ class RelationshipScorer:
         try:
             self.config = load_config() # Reads from config/scoring_config.yaml (or configured path)
             self.logger.info("Configuration loaded successfully.")
-            # Optional: Validate loaded config against a schema if needed
+            # Validate loaded config against a schema if needed
         except ConfigurationError as e:
              self.logger.error(f"Failed to load configuration: {e}", exc_info=True)
              raise ScoringInitializationError(f"Failed to load configuration: {e}") # Re-raise as init error
@@ -174,30 +173,22 @@ class RelationshipScorer:
             scores_raw = {
                 "evidence_strength": evidence_score,
                 "sentiment_scores": sentiment_score_dict,
-                "trend_score": trend_score_val
+                "trend_scores": trend_score_val
             }
 
-            # --- Optional but recommended: Validate final output ---
+            # --- Validate final output ---
             try:
                 validated_output = ScorerOutputData(**scores_raw)
                 self.logger.info("Successfully calculated and validated all scores.")
-                # Return the validated data as a standard dictionary
                 return validated_output.model_dump()
             except ValidationError as e:
                 self.logger.error(f"Output data validation failed: {e}. Returning raw data.", exc_info=True)
-                # Decide behaviour: raise error or return raw data with warning?
-                # Raising ensures consumers always get valid data if no error is raised.
                 raise OutputValidationError(e)
-                # Alternatively, return raw data:
-                # return scores_raw
 
         except (CalculationError, ConfigurationError) as e:
-             # Catch errors raised by individual getters
-             self.logger.error(f"Failed to calculate all scores due to error in underlying calculation: {e}")
-             # Re-raise the original error
-             raise
+            self.logger.error(f"Failed to calculate all scores due to error in underlying calculation: {e}")
+            raise
         except Exception as e:
-             # Catch unexpected errors during assembly
-             self.logger.error(f"Unexpected error assembling final scores: {e}", exc_info=True)
-             raise CalculationError(f"Unexpected error assembling final scores: {e}")
+            self.logger.error(f"Unexpected error assembling final scores: {e}", exc_info=True)
+            raise CalculationError(f"Unexpected error assembling final scores: {e}")
 

@@ -36,5 +36,8 @@ output_schema_example:
     neutral_score: 1.85             # Float: Weighted score sum for neutral mentions
     net_score: 5.0                  # Float: e.g., positive_score - negative_score
     dominant_sentiment: "Positive"  # String: "Positive", "Negative", "Neutral", or "Mixed"
-  trend_score: 1.23                 # Float: Score reflecting dynamics (meaning depends on config)
+  trend_scores:                     # Dict[str, float]: Detailed trend scores
+    recency_weighted: 2.5           # Float: Score based on recency-weighted evidence
+    rate_of_change: 1.2             # Float: Score based on rate of change between time windows
+    evidence_progression: 3.0        # Float: Score based on progression in evidence hierarchy
 

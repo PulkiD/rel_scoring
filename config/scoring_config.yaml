@@ -37,30 +37,35 @@ sentiment:
 
 # --- Trend Score Calculation ---
 trend:
-  # Method used to calculate the trend/momentum/velocity score
-  # Options: "RecencyWeighted", "RateOfChange", "EvidenceProgression"
-  # Note: Implementation details are in src/scoring/trend.py
-  method: "RecencyWeighted"
+  # All trend scores are calculated and returned in a dictionary
+  # Each method provides a different perspective on the relationship's trend
 
-  # Parameters specific to the chosen method
+  # Recency Weighted Score
   recency_weighted:
     # Decay rate (lambda) for exponential decay: score = weight * exp(-lambda * age_in_years)
     # Higher value means older evidence decays faster.
     decay_rate: 0.15 # Example: ~50% reduction in weight after ~4.6 years
 
+  # Rate of Change Score
   rate_of_change:
-    # Time window in years for comparing score changes (e.g., compare last 1 year vs previous 1 year)
-    window_years: 1.0
+    # Time window in years for comparing score changes (e.g., compare last 5 years vs previous 5 years)
+    window_years: 5.0
 
+  # Evidence Progression Score
   evidence_progression:
-    # Define points awarded for reaching certain tiers recently (example)
-    # recent_years_threshold: 2.0
-    # progression_points:
-    #   Guideline: 5.0
-    #   Label: 4.0
-    #   Phase 3 CT: 3.0
+    # Define points awarded for reaching certain tiers recently
+    recent_years_threshold: 2.0
+    progression_points:
+      Guideline: 5.0
+      Label: 4.0
+      Phase 3 CT: 3.0
+      Phase 2 CT: 2.0
+      Phase 1 CT: 1.0
+      PubMed: 1.0
+      Preclinical: 0.25
+      Review: 0.1
     # (Implementation would need logic to track historical max tier)
-    pass # Placeholder for more complex config if needed
+    # pass # Placeholder for more complex config if needed
 
 # --- Logging ---
 logging:
