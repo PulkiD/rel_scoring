@@ -1,0 +1,9 @@
+# requirements.txt
+# Dependencies for the relationship_scorer_package
+
+pydantic>=2.0,<3.0  # For data validation and modeling
+PyYAML>=6.0,<7.0    # For loading YAML configuration files
+
+# Add testing dependencies if needed (often managed separately, e.g., in requirements-dev.txt)
+pytest>=7.0
+pytest-cov>=4.0

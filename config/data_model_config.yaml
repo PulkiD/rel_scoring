@@ -1,0 +1,43 @@
+# config/data_model_config.yaml
+# Human-readable description and example of the data schemas enforced by Pydantic models
+# defined in src/data_models/models.py.
+# This file is primarily for documentation and user reference.
+
+input_schema_description: |
+  The main scorer class (`RelationshipScorer`) expects an input dictionary
+  with the following structure upon initialization. Validation is performed
+  using Pydantic models defined in `src/data_models/models.py`.
+
+input_schema_example:
+  relationship_mentions: # List[MentionItem] - REQUIRED (min 1 item)
+    - source_type: "Guideline"      # String, must be one of the allowed types (see models.py or scoring_config.yaml)
+      year: 2023                   # Integer, year > 1900
+      sentiment: "Positive"        # String, must be "Positive", "Negative", or "Neutral"
+      # mention_id: "optional_id_1" # Optional[String]
+    - source_type: "PubMed"
+      year: 2020
+      sentiment: "Neutral"
+      # mention_id: "pmid:12345"
+    # ... more mentions
+  entity_a_metadata: # EntityMetadata - REQUIRED
+    id: "ENTITY_A_UNIQUE_ID"       # String, non-empty
+    overall_prominence: 150.75     # Float, >= 0. Represents entity's general importance/frequency.
+  entity_b_metadata: # EntityMetadata - REQUIRED
+    id: "ENTITY_B_UNIQUE_ID"
+    overall_prominence: 85.20
+
+output_schema_description: |
+  The `get_all_scores()` method of the `RelationshipScorer` class returns a
+  dictionary with the following structure. Output validation can be optionally
+  performed using the `ScorerOutputData` Pydantic model.
+
+output_schema_example:
+  evidence_strength: 7.85           # Float: Normalized, weighted evidence score
+  sentiment_scores:                 # Dict[str, Any]: Detailed sentiment breakdown
+    positive_score: 5.5             # Float: Weighted score sum for positive mentions
+    negative_score: 0.5             # Float: Weighted score sum for negative mentions
+    neutral_score: 1.85             # Float: Weighted score sum for neutral mentions
+    net_score: 5.0                  # Float: e.g., positive_score - negative_score
+    dominant_sentiment: "Positive"  # String: "Positive", "Negative", "Neutral", or "Mixed"
+  trend_score: 1.23                 # Float: Score reflecting dynamics (meaning depends on config)
+
