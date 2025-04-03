@@ -1,6 +1,5 @@
 # Relationship Scorer Package
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT) 
 [![Python Version](https://img.shields.io/badge/python-3.8+-blue.svg)](https://www.python.org/downloads/)
 
 A Python package designed to calculate an ensemble of scores for relationships between two entities. It analyzes co-occurrence mentions across various sources, considering source authority, sentiment, temporal dynamics, and entity prominence to provide nuanced relationship insights.
@@ -206,23 +205,5 @@ Unit tests should be placed in the `tests/` directory. Run tests using `pytest`:
     # pytest --cov=src tests/
     ```
 *(Note: Test files were not generated in this session as requested, but this section outlines how to run them once created).*
-
-## Contributing
-
-Contributions are welcome! Please adhere to the following guidelines:
-
-1.  Fork the repository.
-2.  Create a new branch for your feature or bug fix (`git checkout -b feature/your-feature-name`).
-3.  Make your changes, ensuring code quality and adding tests for new functionality.
-4.  Ensure all tests pass (`pytest tests/`).
-5.  Commit your changes (`git commit -m 'Add some feature'`).
-6.  Push to the branch (`git push origin feature/your-feature-name`).
-7.  Open a Pull Request against the `main` branch of the original repository.
-
-*(Please add more specific guidelines regarding code style, testing requirements, etc., as needed).*
-
-## License
-
-This project is licensed under the **MIT License** (or replace with your chosen license). See `setup.py` for details or add a `LICENSE` file to the root directory.
 
 ---
