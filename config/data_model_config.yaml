@@ -1,6 +1,3 @@
-# config/data_model_config.yaml
-# Human-readable description and example of the data schemas enforced by Pydantic models
-# defined in src/data_models/models.py.
 # This file is primarily for documentation and user reference.
 
 input_schema_description: |
